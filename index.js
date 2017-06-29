@@ -16,7 +16,7 @@ var defaults = {
 export function show(display = "toast", message, title, options = {}) {
   if (["toast", "notification", "loading"].indexOf(display) < 0)
     throw new Error("Invalid display type");
-  else if (typeof message != "string")
+  else if (typeof message != "string" && display != "loading")
     throw new Error("The message must be a string");
   else if (title && typeof title != "string")
     throw new Error("The title must be a string or null");
@@ -62,7 +62,7 @@ export function showLoading(message, title, options) {
 
 export function hideLoading() {
   for (let i = 0; i < messageQueue.length; i++) {
-    if ("loading" == messageQueue[i].display) continue;
+    if ("loading" != messageQueue[i].display) continue;
 
     if (i == 0) {
       // tell it to start hiding
