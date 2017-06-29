@@ -29,6 +29,7 @@ export function show(display = "toast", message, title, options = {}) {
     visible: true,
     display,
     message,
+    title,
     options,
     view: null // will be set when displayed
   });
@@ -42,14 +43,18 @@ export function showToast(message, options = {}) {
 }
 
 export function showNotification(message, title, options) {
-  if (typeof options == "undefined" && typeof title == "object")
+  if (typeof options == "undefined" && typeof title == "object"){
     options = title;
+    title = null;
+  }
   return show("notification", message, title, options); // return idx
 }
 
 export function showLoading(message, title, options) {
-  if (typeof options == "undefined" && typeof title == "object")
+  if (typeof options == "undefined" && typeof title == "object"){
     options = title;
+    title = null;
+  }
   return show("loading", message, title, options); // return idx
 }
 
@@ -94,9 +99,7 @@ function displayCurrent() {
     case "toast":
       current.view = new RootSiblings(
         (
-          <Notification {...current.options} visible={current.visible}>
-            {current.message}
-          </Notification>
+          <Notification {...current.options} visible={current.visible} message={current.message} />
         )
       );
       if(current.options.duration) setTimeout(showNext, waitTime);
@@ -105,9 +108,7 @@ function displayCurrent() {
     case "notification":
       current.view = new RootSiblings(
         (
-          <Notification {...current.options} visible={current.visible}>
-            {current.message}
-          </Notification>
+          <Notification {...current.options} visible={current.visible} message={current.message} title={current.title} />
         )
       );
       if(current.options.duration) setTimeout(showNext, waitTime);
@@ -116,9 +117,7 @@ function displayCurrent() {
     case "loading":
       current.view = new RootSiblings(
         (
-          <Notification {...current.options} visible={current.visible}>
-            {current.message}
-          </Notification>
+          <Notification {...current.options} visible={current.visible} message={current.message} title={current.title} />
         )
       );
       break;
@@ -135,24 +134,21 @@ function updateCurrent() {
   switch (current.display) {
     case "toast":
       current.view.update(
-        <Notification {...current.options} visible={current.visible}>
-          {current.message}
-        </Notification>
+        <Notification {...current.options} visible={current.visible} message={current.message} />
       );
+      break;
 
     case "notification":
       current.view.update(
-        <Notification {...current.options} visible={current.visible}>
-          {current.message}
-        </Notification>
+        <Notification {...current.options} visible={current.visible} message={current.message} title={current.title} />
       );
+      break;
 
     case "loading":
       current.view.update(
-        <Notification {...current.options} visible={current.visible}>
-          {current.message}
-        </Notification>
+        <Notification {...current.options} visible={current.visible} message={current.message} title={current.title} />
       );
+      break;
 
     default:
       return null;
