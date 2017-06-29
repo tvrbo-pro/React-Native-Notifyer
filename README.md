@@ -1,3 +1,3 @@
-### React Native verlay messages
+### React Native overlay messages
 
 -----------------------
