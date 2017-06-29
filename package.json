@@ -1,5 +1,5 @@
 {
-	"version": "0.5.2",
+	"version": "0.5.3",
 	"name": "react-native-overlay-messages",
 	"description": "React Native overlay messages (toast, banner and loading spinner)",
 	"repository": {

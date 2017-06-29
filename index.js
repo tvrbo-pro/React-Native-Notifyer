@@ -1,7 +1,9 @@
 import React from "react";
 import RootSiblings from "react-native-root-siblings";
 
+import Toast from "./lib/toast";
 import Notification from "./lib/notification";
+import Loading from "./lib/loading";
 
 var messageQueue = [];
 var defaults = {
@@ -99,7 +101,7 @@ function displayCurrent() {
     case "toast":
       current.view = new RootSiblings(
         (
-          <Notification {...current.options} visible={current.visible} message={current.message} />
+          <Toast {...current.options} visible={current.visible} message={current.message} />
         )
       );
       if(current.options.duration) setTimeout(showNext, waitTime);
@@ -117,7 +119,7 @@ function displayCurrent() {
     case "loading":
       current.view = new RootSiblings(
         (
-          <Notification {...current.options} visible={current.visible} message={current.message} title={current.title} />
+          <Loading {...current.options} visible={current.visible} message={current.message} title={current.title} />
         )
       );
       break;
@@ -134,7 +136,7 @@ function updateCurrent() {
   switch (current.display) {
     case "toast":
       current.view.update(
-        <Notification {...current.options} visible={current.visible} message={current.message} />
+        <Toast {...current.options} visible={current.visible} message={current.message} />
       );
       break;
 
@@ -146,7 +148,7 @@ function updateCurrent() {
 
     case "loading":
       current.view.update(
-        <Notification {...current.options} visible={current.visible} message={current.message} title={current.title} />
+        <Loading {...current.options} visible={current.visible} message={current.message} title={current.title} />
       );
       break;
 
