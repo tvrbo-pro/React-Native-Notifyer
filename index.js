@@ -1,7 +1,7 @@
-import React from 'react';
-import RootSiblings from 'react-native-root-siblings';
+import React from "react";
+import RootSiblings from "react-native-root-siblings";
 
-import NotificationView from './lib/notification';
+import Notification from "./lib/notification";
 
 var messageQueue = [];
 var defaults = {
@@ -11,11 +11,15 @@ var defaults = {
 
 // Public functions
 
-function show(display = "toast", message, title, options = {}) {
-  if (["toast", "notification", "loading"].indexOf(display) < 0) throw new Error("Invalid display type");
-  else if (typeof message != "string") throw new Error("The message must be a string")
-  else if (title && typeof title != "string") throw new Error("The title must be a string or null")
-  else if (options && typeof options != "object") throw new Error("The options must be a string or null")
+export function show(display = "toast", message, title, options = {}) {
+  if (["toast", "notification", "loading"].indexOf(display) < 0)
+    throw new Error("Invalid display type");
+  else if (typeof message != "string")
+    throw new Error("The message must be a string");
+  else if (title && typeof title != "string")
+    throw new Error("The title must be a string or null");
+  else if (options && typeof options != "object")
+    throw new Error("The options must be a string or null");
 
   options = Object.assign({}, defaults, options);
 
@@ -33,21 +37,23 @@ function show(display = "toast", message, title, options = {}) {
   return idx;
 }
 
-function showToast(message, options = {}) {
+export function showToast(message, options = {}) {
   return show("toast", message, null, options); // return idx
 }
 
-function showNotifications(message, title, options) {
-  if (typeof options == 'undefined' && typeof title == 'object') options = title;
+export function showNotification(message, title, options) {
+  if (typeof options == "undefined" && typeof title == "object")
+    options = title;
   return show("notification", message, title, options); // return idx
 }
 
-function showLoading(message, title, options) {
-  if (typeof options == 'undefined' && typeof title == 'object') options = title;
+export function showLoading(message, title, options) {
+  if (typeof options == "undefined" && typeof title == "object")
+    options = title;
   return show("loading", message, title, options); // return idx
 }
 
-function hideLoading() {
+export function hideLoading() {
   for (let i = 0; i < messageQueue.length; i++) {
     if ("loading" == messageQueue[i].display) continue;
 
@@ -57,13 +63,12 @@ function hideLoading() {
       updateCurrent();
 
       setTimeout(() => showNext());
-    }
-    else messageQueue.splice(i, 1);
+    } else messageQueue.splice(i, 1);
     return;
   }
 }
 
-function hide(idx) {
+export function hide(idx) {
   for (let i = 0; i < messageQueue.length; i++) {
     if (idx != messageQueue[i].idx) continue;
 
@@ -73,32 +78,53 @@ function hide(idx) {
       updateCurrent();
 
       setTimeout(() => showNext());
-    }
-    else messageQueue.splice(i, 1);
+    } else messageQueue.splice(i, 1);
     return;
   }
 }
-
 
 // Manage
 
 function displayCurrent() {
   var current = messageQueue[0];
+  const waitTime = current.options.animation + current.options.duration;
   if (!current) return;
 
   switch (current.display) {
     case "toast":
-      current.view = new RootSiblings(<NotificationView {...current.options} visible={current.visible}> {current.message} </NotificationView>)
-      setTimeout(() => showNext(), current.options.animation + current.options.duration)
+      current.view = new RootSiblings(
+        (
+          <Notification {...current.options} visible={current.visible}>
+            {current.message}
+          </Notification>
+        )
+      );
+      if(current.options.duration) setTimeout(showNext, waitTime);
       break;
+
     case "notification":
-      current.view = new RootSiblings(<NotificationView {...current.options} visible={current.visible}> {current.message} </NotificationView>)
-      setTimeout(() => showNext(), current.options.animation + current.options.duration)
+      current.view = new RootSiblings(
+        (
+          <Notification {...current.options} visible={current.visible}>
+            {current.message}
+          </Notification>
+        )
+      );
+      if(current.options.duration) setTimeout(showNext, waitTime);
       break;
+
     case "loading":
-      current.view = new RootSiblings(<NotificationView {...current.options} visible={current.visible}> {current.message} </NotificationView>)
+      current.view = new RootSiblings(
+        (
+          <Notification {...current.options} visible={current.visible}>
+            {current.message}
+          </Notification>
+        )
+      );
       break;
-    default: return;
+
+    default:
+      return;
   }
 }
 
@@ -108,33 +134,42 @@ function updateCurrent() {
 
   switch (current.display) {
     case "toast":
-      current.view.update(<NotificationView {...current.options} visible={current.visible}> {current.message} </NotificationView>)
+      current.view.update(
+        <Notification {...current.options} visible={current.visible}>
+          {current.message}
+        </Notification>
+      );
+
     case "notification":
-      current.view.update(<NotificationView {...current.options} visible={current.visible}> {current.message} </NotificationView>)
+      current.view.update(
+        <Notification {...current.options} visible={current.visible}>
+          {current.message}
+        </Notification>
+      );
+
     case "loading":
-      current.view.update(<NotificationView {...current.options} visible={current.visible}> {current.message} </NotificationView>)
-    default: return null;
+      current.view.update(
+        <Notification {...current.options} visible={current.visible}>
+          {current.message}
+        </Notification>
+      );
+
+    default:
+      return null;
   }
 }
 
 function showNext() {
   var current = messageQueue[0];
   if (current && current.view && current.view instanceof RootSiblings) {
+    // tell it to start hiding
+    current.visible = false;
+    updateCurrent();
+
     // destroy after animation has hidden it
     setTimeout(() => current.view.destroy(), current.options.animation);
   }
 
   messageQueue.splice(0, 1);
   if (messageQueue.length) displayCurrent();
-}
-
-// Exports
-
-export {
-  // show,
-  // showToast,
-  showNotifications,
-  // showLoading,
-  // hideLoading,
-  hide
 }
