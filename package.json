@@ -1,16 +1,17 @@
 {
-	"version": "0.5.0",
+	"version": "0.5.1",
 	"name": "react-native-overlay-messages",
 	"description": "React Native overlay messages (toast, banner and loading spinner)",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/TvrboPro/React-Native-Root-Notification"
+		"url": "https://github.com/TvrboPro/React-Native-Overlay-Messages"
 	},
 	"license": "MIT",
 	"main": "./index.js",
 	"keywords": [
-		"react-component",
-		"react-native",
+		"react",
+		"native",
+		"component",
 		"ios",
 		"android",
 		"notification",
