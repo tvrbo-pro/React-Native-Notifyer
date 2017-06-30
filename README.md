@@ -50,7 +50,7 @@ hideLoading(); // later on
 ![loading-mid](./images/loading-mid.png)
 
 ```javascript
-var id = showLoading()
+showLoading()
 
 hideLoading(); // later on
 ```
