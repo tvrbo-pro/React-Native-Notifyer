@@ -1,4 +1,4 @@
-### React Native overlay messages
+### React Native Notifyer
 
 -----------------------
 
@@ -14,7 +14,7 @@ This library allows you to display three kind of messages (toast, notification a
 Install the package in your app project:
 
 ```bash
-npm install react-native-overlay-messages
+npm install react-native-notifyer
 ```
 
 Then, anywhere in your source code, import the functions you need:
@@ -26,7 +26,7 @@ import {
 	showLoading,
 	hideLoading,
 	hide
-} from 'react-native-overlay-messages';
+} from 'react-native-notifyer';
 ```
 
 ## Examples
