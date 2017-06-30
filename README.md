@@ -2,9 +2,13 @@
 
 -----------------------
 
-Pure Jacascript solution.
+Pure Javascript solution to display message views in your app, independently of routing or modals.
 
 ## Usage
+
+```bash
+npm install react-native-overlay-messages
+```
 
 ```javascript
 	import {
