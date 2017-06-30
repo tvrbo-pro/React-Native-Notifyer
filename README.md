@@ -20,13 +20,13 @@ npm install react-native-overlay-messages
 Then, anywhere in your source code, import the functions you need:
 
 ```javascript
-	import {
-		showToast,
-		showNotification,
-		showLoading,
-		hideLoading,
-		hide
-	} from 'react-native-overlay-messages';
+import {
+	showToast,
+	showNotification,
+	showLoading,
+	hideLoading,
+	hide
+} from 'react-native-overlay-messages';
 ```
 
 ## Examples
