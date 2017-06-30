@@ -1,11 +1,16 @@
 {
-	"version": "0.6.0",
-	"name": "react-native-overlay-messages",
-	"description": "React Native overlay messages (toast, banner and loading spinner)",
+	"version": "0.9.0",
+	"name": "react-native-notifyer",
+	"description": "React Native Notifyer (toast, banner and loading spinner)",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/TvrboPro/React-Native-Overlay-Messages"
+		"url": "https://github.com/TvrboPro/React-Native-Notifyer"
 	},
+  "author": {
+    "name" : "Jordi Moraleda",
+    "email" : "jordi@tvrbo.pro",
+    "url" : "https://www.tvrbo.pro/"
+  },
 	"license": "MIT",
 	"main": "index.js",
 	"keywords": [
