@@ -4,9 +4,9 @@
 
 Pure Javascript solution to display message views in your app, independently of routing or modals.
 
-This library allows you to display three kind of messages (toast, notification and loading indicator), one at a time. If many messages are queued, they will be displayed in order, once the previous ones are hidden.
+Lets you display **Toasts**, **Notifications** and **Loading indicators**, one at a time. If many messages are queued, they will be displayed in order, once the previous ones are hidden.
 
-* Toast and notifications will hide automatically after 5.5 seconds
+* Toast and notifications hide automatically after 5.5 seconds
 * Loading indicators will not hide until you tell them to
 
 ## Usage
