@@ -1,16 +1,16 @@
 {
-	"version": "0.9.1",
+	"version": "0.9.2",
 	"name": "react-native-notifyer",
 	"description": "React Native Notifyer (toast, banner and loading spinner)",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/TvrboPro/React-Native-Notifyer"
 	},
-  "author": {
-    "name" : "Jordi Moraleda",
-    "email" : "jordi@tvrbo.pro",
-    "url" : "https://www.tvrbo.pro/"
-  },
+	"author": {
+		"name": "Jordi Moraleda",
+		"email": "jordi@tvrbo.pro",
+		"url": "https://www.tvrbo.pro/"
+	},
 	"license": "MIT",
 	"main": "index.js",
 	"keywords": [
@@ -25,6 +25,6 @@
 		"loading"
 	],
 	"dependencies": {
-		"react-native-root-siblings": "^1.2.1"
+		"@bam.tech/react-native-root-siblings": "^1.2.1"
 	}
 }
