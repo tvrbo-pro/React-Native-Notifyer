@@ -1,5 +1,5 @@
 {
-	"version": "0.9.4",
+	"version": "1.0.0-beta1",
 	"name": "react-native-notifyer",
 	"description": "React Native Notifyer (toast, banner and loading spinner)",
 	"repository": {
@@ -12,7 +12,7 @@
 		"url": "https://www.tvrbo.pro/"
 	},
 	"license": "MIT",
-	"main": "index.js",
+	"main": "src/index.js",
 	"keywords": [
 		"react",
 		"native",

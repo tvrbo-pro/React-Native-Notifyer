@@ -1,13 +1,13 @@
 import React from "react";
 import RootSiblings from "@bam.tech/react-native-root-siblings";
 
-import Toast from "./lib/toast";
-import Notification from "./lib/notification";
-import Loading from "./lib/loading";
+import Toast from "../lib/toast";
+import Notification from "../lib/notification";
+import Loading from "../lib/loading";
 
 var messageQueue = [];
 var defaults = {
-  duration: 5500,
+  duration: 4000,
   animation: 250
 };
 
@@ -20,8 +20,6 @@ export function show(display = "toast", message, title, options = {}) {
     throw new Error("The message must be a string");
   else if (title && typeof title != "string")
     throw new Error("The title must be a string or null");
-  else if (options && typeof options != "object")
-    throw new Error("The options must be a string or null");
 
   options = Object.assign({}, defaults, options);
 
