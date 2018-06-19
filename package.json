@@ -25,6 +25,8 @@
 		"loading"
 	],
 	"dependencies": {
-		"@bam.tech/react-native-root-siblings": "^2.0.3"
+		"@bam.tech/react-native-root-siblings": "^2.0.3",
+		"prop-types": "^15.6.1",
+		"react": "^16.4.1"
 	}
 }
