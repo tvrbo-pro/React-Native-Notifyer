@@ -1,5 +1,5 @@
 {
-	"version": "1.0.0",
+	"version": "2.0.0-beta1",
 	"name": "react-native-notifyer",
 	"description": "React Native Notifyer (toast, banner and loading spinner)",
 	"repository": {
