@@ -69,7 +69,7 @@ export function showToast(payload) {
 
     // Done timeout
     if (currentToast.timeout) clearTimeout(currentToast.timeout);
-    currentToast.timeout = setTimeout(doneToast, payload.duration || TOAST_DURATION);
+    currentToast.timeout = setTimeout(doneToast, params.duration || TOAST_DURATION);
   }
   // queue the message
   else {
@@ -83,7 +83,7 @@ export function showToast(payload) {
 function doneToast() {
   if (toastQueue.length) {
     const current = toastQueue.splice(0, 1)[0];
-    const {text, params} = current;
+    const { text, params } = current;
     currentToast.text = text;
     currentToast.params = params;
     currentToast.active = true;
@@ -132,10 +132,12 @@ export function showNotification({ title, text, ...params }) {
 // LOADING SPINNER
 
 export function showLoading(payload) {
-  if (!payload) return;
+  if (!payload) {
+    currentLoading.params = {};
+  }
   else if (typeof payload === "object") {
-    currentLoading.title = title;
-    currentLoading.text = text;
+    currentLoading.title = payload.title;
+    currentLoading.text = payload.text;
     payload.title = payload.text = undefined;
     currentLoading.params = payload;
   }
@@ -144,7 +146,6 @@ export function showLoading(payload) {
     currentLoading.text = text;
     currentLoading.params = undefined;
   }
-  else throw new Error("Invalid parameters");
 
   currentLoading.active = true;
 
@@ -155,7 +156,7 @@ export function showLoading(payload) {
   }
 
   // update/show the view
-  if (currentLoading.view) {
+  if (currentLoading.view && currentLoading.view.update) {
     currentLoading.view.update(
       <Loading {...currentLoading.params} visible={true} message={currentLoading.text} title={currentLoading.title} />
     );
@@ -168,14 +169,18 @@ export function showLoading(payload) {
 }
 
 export function hideLoading() {
+  if (!isLoading()) return;
+
   currentLoading.active = false;
   if (currentLoading.hidingTimeout) return;
 
-  currentLoading.view.update(
-    <Loading {...currentLoading.params} visible={false} message={currentLoading.text} title={currentLoading.title} />
-  );
+  if (currentLoading.view && currentLoading.view.update) {
+    currentLoading.view.update(
+      <Loading {...currentLoading.params} visible={false} message={currentLoading.text} title={currentLoading.title} />
+    );
+  }
   currentLoading.hidingTimeout = setTimeout(() => {
-    currentLoading.view.destroy();
+    if (currentLoading.view.destroy) currentLoading.view.destroy();
     currentLoading.view = null;
     currentLoading.hidingTimeout = null;
   }, ANIMATION_DURATION);
