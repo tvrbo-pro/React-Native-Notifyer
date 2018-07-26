@@ -2,10 +2,11 @@ import React from "react";
 import RootSiblings from "@bam.tech/react-native-root-siblings";
 
 import Toast from "../lib/toast";
-// import Notification from "../lib/notification";
+import Notification from "../lib/notification";
 import Loading from "../lib/loading";
 
-const TOAST_DURATION = 4000;
+const TOAST_DURATION = 3000;
+const NOTIFICATION_DURATION = 5000;
 const ANIMATION_DURATION = 200;
 
 const toastQueue = [];
@@ -18,6 +19,7 @@ const currentToast = {
 };
 const currentNotification = {
   timeout: null,
+  hidingTimeout: null,
   view: null
 };
 const currentLoading = {
@@ -40,7 +42,7 @@ export function showToast(payload) {
   }
   else if (typeof payload === "string") {
     text = payload;
-    params = undefined;
+    params = {};
   }
   else throw new Error("Invalid parameters");
 
@@ -126,7 +128,104 @@ function hideToast() {
 
 // NOTIFICATION
 
-export function showNotification({ title, text, ...params }) {
+export function showNotification(payload) {
+  var title, text, params;
+  if (!payload) return;
+  else if (typeof payload === "object") {
+    title = payload.title;
+    text = payload.text;
+    payload.title = undefined;
+    payload.text = undefined;
+    params = payload;
+  }
+  else if (typeof payload === "string") {
+    title = "";
+    text = payload;
+    params = {};
+  }
+  else throw new Error("Invalid parameters");
+
+  // nothing shown or something about to hide
+  if (!currentNotification.active || currentNotification.hidingTimeout) {
+    // abort hiding if necessary
+    if (currentNotification.hidingTimeout) {
+      clearTimeout(currentNotification.hidingTimeout);
+      currentNotification.hidingTimeout = null;
+    }
+    currentNotification.text = text;
+    currentNotification.title = title;
+    currentNotification.params = params;
+    currentNotification.active = true;
+
+    // update/show the view
+    if (currentNotification.view) {
+      currentNotification.view.update(
+        <Notification {...currentNotification.params} visible={true} message={currentNotification.text} title={currentNotification.title} duration={params.duration || NOTIFICATION_DURATION} />
+      );
+    }
+    else {
+      currentNotification.view = new RootSiblings(
+        <Notification {...currentNotification.params} visible={true} message={currentNotification.text} title={currentNotification.title} duration={params.duration || NOTIFICATION_DURATION} />
+      );
+    }
+
+    // Done timeout
+    if (currentNotification.timeout) clearTimeout(currentNotification.timeout);
+    currentNotification.timeout = setTimeout(doneNotification, params.duration || NOTIFICATION_DURATION);
+  }
+  // queue the message
+  else {
+    notificationQueue.push({
+      text,
+      title,
+      params
+    });
+  }
+}
+
+function doneNotification() {
+  if (notificationQueue.length) {
+    const current = notificationQueue.splice(0, 1)[0];
+    const { text, title, params } = current;
+    currentNotification.text = text;
+    currentNotification.title = title;
+    currentNotification.params = params;
+    currentNotification.active = true;
+
+    // update/show the view
+    if (currentNotification.view) {
+      currentNotification.view.update(
+        <Notification {...currentNotification.params} visible={true} message={currentNotification.text} title={currentNotification.title} duration={currentNotification.params.duration || NOTIFICATION_DURATION} />
+      );
+    }
+    else {
+      currentNotification.view = new RootSiblings(
+        <Notification {...currentNotification.params} visible={true} message={currentNotification.text} title={currentNotification.title} duration={currentNotification.params.duration || NOTIFICATION_DURATION} />
+      );
+    }
+
+    // Done timeout
+    if (currentNotification.timeout) clearTimeout(currentNotification.timeout);
+    currentNotification.timeout = setTimeout(doneNotification, currentNotification.params && currentNotification.params.duration || NOTIFICATION_DURATION);
+  }
+  else {
+    currentNotification.timeout = null;
+    hideNotification();
+  }
+}
+
+function hideNotification() {
+  currentNotification.active = false;
+  if (currentNotification.hidingTimeout) return;
+
+  currentNotification.view.update(
+    <Notification {...currentNotification.params} visible={false} message={currentNotification.text} title={currentNotification.title} duration={currentNotification.params.duration || NOTIFICATION_DURATION} />
+  );
+  currentNotification.hidingTimeout = setTimeout(() => {
+    currentNotification.view.destroy();
+    currentNotification.view = null;
+    currentNotification.hidingTimeout = null;
+  }, ANIMATION_DURATION);
 }
 
 // LOADING SPINNER
@@ -144,7 +243,7 @@ export function showLoading(payload) {
   else if (typeof payload === "string") {
     currentLoading.title = null;
     currentLoading.text = text;
-    currentLoading.params = undefined;
+    currentLoading.params = {};
   }
 
   currentLoading.active = true;
