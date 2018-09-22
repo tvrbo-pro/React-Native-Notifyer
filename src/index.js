@@ -242,7 +242,7 @@ export function showLoading(payload) {
   }
   else if (typeof payload === "string") {
     currentLoading.title = null;
-    currentLoading.text = text;
+    currentLoading.text = payload;
     currentLoading.params = {};
   }
 
